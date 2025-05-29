@@ -125,44 +125,38 @@
     <div class="subtitle">当你不开心的时候就点一下我吧</div>
     <div class="response" id="responseText"></div>
   </div>
+<script>
+  const kitty = document.getElementById('kitty');
+  const responseText = document.getElementById('responseText');
 
-  <script>
-    const kitty = document.getElementById('kitty');
-    const responseText = document.getElementById('responseText');
+  const responses = [
+    "你戳我干嘛，我怕疼~",
+    "你在戳我，我就要生气了！",
+    "我真的生气了哦！",
+    "我生气了，不理你了。",
+    "这下心情好点了嘛？Hello Kitty 一直在你身边 💖"
+  ];
 
-    const responses = [
-      "你戳我干嘛，我怕疼~",
-      "你在戳我，我就要生气了！",
-      "我真的生气了哦！",
-      "我生气了，不理你了。",
-      "这下心情好点了嘛？Hello Kitty 一直在你身边 💖"
-    ];
+  let clickCount = 0;
 
-    let clickCount = 0;
+  kitty.addEventListener('click', () => {
+    responseText.textContent = responses[clickCount];
+    clickCount = (clickCount + 1) % responses.length;
+  });
 
-    kitty.addEventListener('click', () => {
-      if (clickCount < responses.length) {
-        responseText.textContent = responses[clickCount];
-        clickCount++;
-      } else {
-        responseText.textContent = "嘻嘻，不和你闹了~";
-      }
-    });
+  document.body.addEventListener('click', (e) => {
+    if (e.target === kitty) return;
 
-    document.body.addEventListener('click', (e) => {
-      // 如果点的是中心 kitty，就不触发背景特效
-      if (e.target === kitty) return;
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = e.clientX - 10 + 'px';
+    heart.style.top = e.clientY - 10 + 'px';
+    document.body.appendChild(heart);
 
-      const heart = document.createElement('div');
-      heart.classList.add('heart');
-      heart.style.left = e.clientX - 10 + 'px';
-      heart.style.top = e.clientY - 10 + 'px';
-      document.body.appendChild(heart);
-
-      setTimeout(() => {
-        heart.remove();
-      }, 2000);
-    });
-  </script>
+    setTimeout(() => {
+      heart.remove();
+    }, 2000);
+  });
+ </script>
 </body>
 </html>
