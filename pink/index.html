@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hello Kitty 的世界</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: #ffddee;
+      background-image:
+        url("https://media.giphy.com/media/SNUKYsygXHZxS/giphy.gif"),
+        url("https://media.giphy.com/media/kZqbBT64ECtjy/giphy.gif");
+      background-size: 150px 150px;
+      background-repeat: repeat;
+      background-position: 0 0, 75px 75px;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .title {
+      font-size: 2em;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 3px white;
+      color: #d63384;
+    }
+
+    .kitty-gif {
+      width: 200px;
+      height: auto;
+      cursor: pointer;
+      border-radius: 20px;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .kitty-gif:hover {
+      transform: scale(1.05);
+    }
+
+    .subtitle {
+      margin-top: 15px;
+      font-size: 1.2em;
+      color: #cc0066;
+    }
+
+    .response {
+      margin-top: 20px;
+      font-size: 1.4em;
+      font-weight: bold;
+      min-height: 30px;
+      color: #ff69b4;
+      text-shadow: 1px 1px 2px white;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: pink;
+      transform: rotate(45deg);
+      animation: float 2s linear forwards;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: pink;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(45deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-150px) scale(1.5) rotate(45deg);
+      }
+    }
+
+    @media screen and (max-width: 600px) {
+      .title { font-size: 1.5em; }
+      .kitty-gif { width: 150px; }
+      .subtitle { font-size: 1em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">欢迎来到 Hello Kitty 的世界</div>
+    <img
+      src="https://media3.giphy.com/media/92YG8KKSjYhMc/giphy.gif"
+      alt="Hello Kitty"
+      class="kitty-gif"
+      id="kitty"
+    >
+    <div class="subtitle">当你不开心的时候就点一下我吧</div>
+    <div class="response" id="responseText"></div>
+  </div>
+
+  <script>
+    const kitty = document.getElementById('kitty');
+    const responseText = document.getElementById('responseText');
+
+    const responses = [
+      "你戳我干嘛，我怕疼~",
+      "你在戳我，我就要生气了！",
+      "我真的生气了哦！",
+      "我生气了，不理你了。",
+      "这下心情好点了嘛？Hello Kitty 一直在你身边 💖"
+    ];
+
+    let clickCount = 0;
+
+    kitty.addEventListener('click', () => {
+      if (clickCount < responses.length) {
+        responseText.textContent = responses[clickCount];
+        clickCount++;
+      } else {
+        responseText.textContent = "嘻嘻，不和你闹了~";
+      }
+    });
+
+    document.body.addEventListener('click', (e) => {
+      // 如果点的是中心 kitty，就不触发背景特效
+      if (e.target === kitty) return;
+
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = e.clientX - 10 + 'px';
+      heart.style.top = e.clientY - 10 + 'px';
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
